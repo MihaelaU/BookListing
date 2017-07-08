@@ -1,8 +1,7 @@
 package com.example.android.booklisting;
 
-/**
- * Book
- * A custom class to store Book information
+/*
+ class to store Book information
  */
 class Book {
 
