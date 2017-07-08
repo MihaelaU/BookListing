@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 
 public class BookListFragment extends Fragment {
-    // --Commented out by Inspection (6/4/2016 9:21 AM):private static final String LOG_TAG = BookListFragment.class.getSimpleName();
+
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
