@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Book Listing</string>
+
+    <string name="search_field_label">Search for books</string>
+    <string name="results_label">Results</string>
+
+    <string name="no_connection_message">No connection</string>
+    <string name="no_connection_icon_description">A disabled Wi-fi signal</string>
+
+    <string name="empty_results_message">Nothing found</string>
+    <string name="empty_results_icon_description">A crying face</string>
+
+    <string-array name="results">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+    </string-array>
+</resources>
