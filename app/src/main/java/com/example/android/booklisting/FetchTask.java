@@ -76,12 +76,12 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
                         bookAuthorString = "Unknown";
                     } else {
 
-                        int countAuthors = bookAuthor.length();
-                        for (int e = 0; e < countAuthors; e++) {
+                        int countAuthor = bookAuthor.length();
+                        for (int e = 0; e < countAuthor; e++) {
                             String author = bookAuthor.getString(e);
                             if (bookAuthorString.isEmpty()) {
                                 bookAuthorString = author;
-                            } else if (e == countAuthors - 1) {
+                            } else if (e == countAuthor - 1) {
                                 bookAuthorString = bookAuthorString + " and " + author;
                             } else {
                                 bookAuthorString = bookAuthorString + ", " + author;

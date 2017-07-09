@@ -53,7 +53,9 @@ public class BookListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Set listeners on input fields and other setups
         final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
+
         final Spinner ResultsField = (Spinner) getActivity().findViewById(R.id.results_spinner);
+
         // Set the listeners on the SearchField
         searchField.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
