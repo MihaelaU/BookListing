@@ -41,7 +41,6 @@
                         android:hint="@string/search_field_label"
                         android:imeOptions="actionSearch"
                         android:inputType="text"
-                        android:singleLine="true"
                         android:textColor="@color/book_search_text"
                         android:textColorHint="@color/book_search_hint" />
                 </LinearLayout>
@@ -64,7 +63,7 @@
                         android:textSize="12sp" />
 
                     <Spinner
-                        android:id="@+id/max_results_spinner"
+                        android:id="@+id/results_spinner"
                         android:layout_width="75dp"
                         android:layout_height="24dp"
                         android:background="@color/colorPrimary"

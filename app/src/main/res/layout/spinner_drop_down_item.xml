@@ -5,5 +5,4 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:width="100dp"
-    android:singleLine="true"
     android:textAlignment="center" />

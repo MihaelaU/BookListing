@@ -19,7 +19,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -54,23 +53,23 @@ public class BookListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         // Set listeners on input fields and other setups
         final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
-        final Spinner maxResultsField = (Spinner) getActivity().findViewById(R.id.max_results_spinner);
+        final Spinner ResultsField = (Spinner) getActivity().findViewById(R.id.results_spinner);
         // Set the listeners on the SearchField
         searchField.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 searchField.setCursorVisible(true);
             }
         });
-        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String maxResultsString = maxResultsField.getSelectedItem().toString();
-                    int maxResults = Integer.parseInt(maxResultsString);
+                    String ResultsString = ResultsField.getSelectedItem().toString();
+                    int Results = Integer.parseInt(ResultsString);
                     searchField.setCursorVisible(false);
                     String searchCriteria = searchField.getText().toString();
-                    getBooks(searchCriteria, maxResults);
+                    getBooks(searchCriteria, Results);
                     View view = getActivity().getCurrentFocus();
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -81,22 +80,17 @@ public class BookListFragment extends Fragment {
                 return handled;
             }
         });
-        // Setup the Max Results Spinner
-      //  ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.results, R.layout.spinner_max_results);
-      //  adapter.setDropDownViewResource(R.layout.spinner_drop_down_item);
-      //  maxResultsField.setAdapter(adapter);
-       // maxResultsField.setOnItemSelectedListener(new MaxResultsSpinnerListener());
+
     }
 
     /**
-     * getBooks
-     * This methods handles calling the FetchTask method to query the Google Books API
+     * getBooks is calling the FetchTask method to query the Google Books API
      *
      * @param searchCriteria the search text entered into the SearchField EditText
-     * @param maxResults     the number of results to be returned from the API selected
+     * @param Results     the number of results to be returned from the API selected
      *                       in the MaxResults Spinner
      */
-    private void getBooks(String searchCriteria, int maxResults) {
+    private void getBooks(String searchCriteria, int Results) {
         final LinearLayout noConnection = (LinearLayout) getActivity().findViewById(R.id.no_connection);
         final LinearLayout emptyResults = (LinearLayout) getActivity().findViewById(R.id.empty_results);
 
@@ -115,7 +109,7 @@ public class BookListFragment extends Fragment {
                     mValues = output;
                     mAdapter = new BookListAdapter(mValues, getContext());
                     recyclerView.setAdapter(mAdapter);
-                    // If nothing found, show a message
+
                     if (mValues == null) {
                         emptyResults.setVisibility(View.VISIBLE);
 
@@ -124,7 +118,7 @@ public class BookListFragment extends Fragment {
 
                     }
                 }
-            }, searchCriteria, maxResults);
+            }, searchCriteria, Results);
             fetch.execute();
         } else {
             emptyResults.setVisibility(View.GONE);
@@ -150,23 +144,20 @@ public class BookListFragment extends Fragment {
     }
 
     /**
-     * MaxResultsSpinnerListener
-     * Handle a new Spinner selection
-     * Selecting a new value will run the getBooks method to query the Google Books API
-     */
-    private class MaxResultsSpinnerListener implements AdapterView.OnItemSelectedListener {
+     * results Spinner Listener*/
+    private class ResultsSpinnerListener implements AdapterView.OnItemSelectedListener {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
             String selected = parent.getItemAtPosition(pos).toString();
-            int maxResults = Integer.parseInt(selected);
+            int Results = Integer.parseInt(selected);
             final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
             String searchCriteria = searchField.getText().toString();
             if (!searchCriteria.isEmpty()) {
-                getBooks(searchCriteria, maxResults);
+                getBooks(searchCriteria, Results);
             }
         }
 
         public void onNothingSelected(AdapterView parent) {
-            // Do nothing.
+
         }
     }
 
@@ -188,7 +179,7 @@ public class BookListFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-        // --Commented out by Inspection (6/4/2016 9:21 AM):void onListFragmentInteraction(ArrayList<Book> mValues);
+
     }
 }
 

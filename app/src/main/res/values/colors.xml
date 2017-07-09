@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#004D40</color>
+    <color name="colorPrimaryDark">#009688</color>
+    <color name="colorAccent">#7986CB</color>
     <!--Book Search-->
-    <color name="book_search_text">#E8EAF6</color>
-    <color name="book_search_hint">#9FA8DA</color>
+    <color name="book_search_text">#006064</color>
+    <color name="book_search_hint">#00ACC1</color>
+
     <!--Book List-->
-    <color name="book_list_authors">#616161</color>
-    <color name="divider_color">#BDBDBD</color>
+    <color name="book">#4CAF50</color>
+    <color name="book_list_authors">#1B5E20</color>
+    <color name="divider_color">#69F0AE</color>
 </resources>

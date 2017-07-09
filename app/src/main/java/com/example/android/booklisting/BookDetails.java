@@ -1,7 +1,9 @@
 package com.example.android.booklisting;
-
-/* book details
+/**
+ * Created by ursum on 08/07/2017.
  */
+//book details
+
 class Book {
 
     final String title;

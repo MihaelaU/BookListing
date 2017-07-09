@@ -1,30 +1,30 @@
 package com.example.android.booklisting;
-
+/**
+ * Created by ursum on 08/07/2017.
+ */
 import android.os.AsyncTask;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 
 
 /**
- * FetchTask
- * This class handles querying the Google Books API, receiving the results, parsing them, building
- * an ArrayList of Book Objects, and returning the result
+ * FetchTask is fetching the Google Books API, getting the results, parsing it and building the structure
+ * an ArrayList of Book Objects and returning the result
  */
 class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
     private final AsyncResponse delegate;
     private final String queryURI;
-    private final int maxResults;
+    private final int Results;
 
     // Constructor
     public FetchTask(AsyncResponse delegate, String queryURI, int maxResults) {
         this.delegate = delegate;
         this.queryURI = queryURI;
-        this.maxResults = maxResults;
+        this.Results = maxResults;
     }
+
 
     // Interface to delegate the onPostExecute actions
     public interface AsyncResponse {
@@ -46,47 +46,45 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
         // If the results are not null proceed to parsing and creating Book Objects
         if (jsonResults != null) {
             try {
-                // Convert the results from String to JSONObject
+
                 JSONObject jsonObject = new JSONObject(jsonResults);
-                // Get the items node (Books) from the JSONObject
+
                 JSONArray resultsArray = jsonObject.getJSONArray("items");
-                // Count the results
+
                 int countResults = resultsArray.length();
-                // Create an ArrayList to hold the parsed collection of results
+
                 ArrayList<Book> parsedResults = new ArrayList<>();
-                // Loop through the resultsArray to parse the Books out
+
                 for (int i = 0; i < countResults; i++) {
-                    // Get the Book record
+
                     JSONObject bookRecord = resultsArray.getJSONObject(i);
-                    // Get the volume info node from the Book record
+
                     JSONObject bookVolumeInfo = bookRecord.getJSONObject("volumeInfo");
-                    // Get the title from the volume info
+
                     String bookTitle = bookVolumeInfo.getString("title");
-                    //------------------------------------------------------------------------------
-                    // AUTHORS
-                    //------------------------------------------------------------------------------
-                    // Some books don't have an author node, use try/catch to prevent null pointers
-                    JSONArray bookAuthors = null;
+
+                    JSONArray bookAuthor = null;
                     try {
-                        bookAuthors = bookVolumeInfo.getJSONArray("author");
+                        bookAuthor = bookVolumeInfo.getJSONArray("authors");
                     } catch (JSONException ignored) {
+
                     }
-                    // Convert the author to a string
-                    String bookAuthorsString = "";
-                    // If the author is empty, set it as "Unknown"
-                    if (bookAuthors == null) {
-                        bookAuthorsString = "Unknown";
+
+                    String bookAuthorString = "";
+
+                    if (bookAuthor == null) {
+                        bookAuthorString = "Unknown";
                     } else {
-                        // Format the author as "author1, author2, and author3"
-                        int countAuthors = bookAuthors.length();
+
+                        int countAuthors = bookAuthor.length();
                         for (int e = 0; e < countAuthors; e++) {
-                            String author = bookAuthors.getString(e);
-                            if (bookAuthorsString.isEmpty()) {
-                                bookAuthorsString = author;
+                            String author = bookAuthor.getString(e);
+                            if (bookAuthorString.isEmpty()) {
+                                bookAuthorString = author;
                             } else if (e == countAuthors - 1) {
-                                bookAuthorsString = bookAuthorsString + " and " + author;
+                                bookAuthorString = bookAuthorString + " and " + author;
                             } else {
-                                bookAuthorsString = bookAuthorsString + ", " + author;
+                                bookAuthorString = bookAuthorString + ", " + author;
                             }
                         }
                     }
@@ -106,7 +104,7 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
                         bookSmallThumbnail  = bookImageLinks.getString("smallThumbnail");
                     }
                     // Create a Book object
-                    Book mBook = new Book(bookTitle, bookAuthorsString, bookSmallThumbnail);
+                    Book mBook = new Book(bookTitle, bookAuthorString, bookSmallThumbnail);
                     // Add it to the array
                     parsedResults.add(i, mBook);
                 }

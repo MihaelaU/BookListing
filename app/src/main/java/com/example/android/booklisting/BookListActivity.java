@@ -10,11 +10,10 @@ import android.view.WindowManager;
 
 
 public class BookListActivity extends AppCompatActivity implements BookListFragment.OnListFragmentInteractionListener {
-    private static final String LOG_TAG = BookListActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Hide the keyboard
+        // hide keyboard
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setContentView(R.layout.activity_book_list);
 
