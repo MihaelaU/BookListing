@@ -65,19 +65,19 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
                     //------------------------------------------------------------------------------
                     // AUTHORS
                     //------------------------------------------------------------------------------
-                    // Some books don't have an authors node, use try/catch to prevent null pointers
+                    // Some books don't have an author node, use try/catch to prevent null pointers
                     JSONArray bookAuthors = null;
                     try {
-                        bookAuthors = bookVolumeInfo.getJSONArray("authors");
+                        bookAuthors = bookVolumeInfo.getJSONArray("author");
                     } catch (JSONException ignored) {
                     }
-                    // Convert the authors to a string
+                    // Convert the author to a string
                     String bookAuthorsString = "";
                     // If the author is empty, set it as "Unknown"
                     if (bookAuthors == null) {
                         bookAuthorsString = "Unknown";
                     } else {
-                        // Format the authors as "author1, author2, and author3"
+                        // Format the author as "author1, author2, and author3"
                         int countAuthors = bookAuthors.length();
                         for (int e = 0; e < countAuthors; e++) {
                             String author = bookAuthors.getString(e);

@@ -34,9 +34,9 @@ public class BookListAdapter extends RecyclerView.Adapter<BookListAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mTitleView.setText(mValues.get(position).title);
-        String authorsString = "by " + mValues.get(position).authors;
+        String authorsString = "by " + mValues.get(position).author;
         holder.mAuthorsView.setText(authorsString);
-        String smallThumbnailLink = mValues.get(position).smallThumbnailLink;
+        String smallThumbnailLink = mValues.get(position).Link;
         Picasso.with(mContext).load(smallThumbnailLink).into(holder.mBookCoverView);
 
     }
