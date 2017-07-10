@@ -2,7 +2,7 @@ package com.example.android.booklisting;
 /**
  * Created by ursum on 08/07/2017.
  */
-//book details
+//book details structure
 
 class Book {
 
