@@ -45,8 +45,10 @@ public class BookListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+
         }
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -110,6 +112,7 @@ public class BookListFragment extends Fragment {
                 public void processFinish(ArrayList<Book> output) {
                     mValues = output;
                     mAdapter = new BookListAdapter(mValues, getContext());
+
                     recyclerView.setAdapter(mAdapter);
 
                     if (mValues == null) {
@@ -132,18 +135,22 @@ public class BookListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booklist_list, container, false);
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
+                recyclerView.setAdapter(mAdapter);
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
+                recyclerView.setAdapter(mAdapter);
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
         }
         return view;
     }
+
 
     /**
      * results Spinner Listener*/
