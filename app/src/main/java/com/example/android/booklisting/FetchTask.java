@@ -25,12 +25,6 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
         this.Results = maxResults;
     }
 
-
-    // Interface to delegate the onPostExecute actions
-    public interface AsyncResponse {
-        void processFinish(ArrayList<Book> output);
-    }
-
     /**
      * doInBackground
      *
@@ -48,68 +42,73 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
             try {
 
                 JSONObject jsonObject = new JSONObject(jsonResults);
+                if (jsonObject.has("items")) {
+                    JSONArray resultsArray = jsonObject.getJSONArray("items");
 
-                JSONArray resultsArray = jsonObject.getJSONArray("items");
+                    int countResults = resultsArray.length();
 
-                int countResults = resultsArray.length();
+                    ArrayList<Book> parsedResults = new ArrayList<>();
 
-                ArrayList<Book> parsedResults = new ArrayList<>();
+                    for (int i = 0; i < countResults; i++) {
 
-                for (int i = 0; i < countResults; i++) {
+                        JSONObject bookRecord = resultsArray.getJSONObject(i);
 
-                    JSONObject bookRecord = resultsArray.getJSONObject(i);
+                        JSONObject bookVolumeInfo = bookRecord.getJSONObject("volumeInfo");
 
-                    JSONObject bookVolumeInfo = bookRecord.getJSONObject("volumeInfo");
+                        String bookTitle = bookVolumeInfo.getString("title");
 
-                    String bookTitle = bookVolumeInfo.getString("title");
+                        JSONArray bookAuthor = null;
 
-                    JSONArray bookAuthor = null;
-                    try {
-                        bookAuthor = bookVolumeInfo.getJSONArray("authors");
-                    } catch (JSONException ignored) {
+                        try {
+                            bookAuthor = bookVolumeInfo.getJSONArray("authors");
+                        } catch (JSONException ignored) {
 
-                    }
+                        }
 
-                    String bookAuthorString = "";
+                        String bookAuthorString = "";
 
-                    if (bookAuthor == null) {
-                        bookAuthorString = "Unknown";
-                    } else {
+                        if (bookAuthor == null) {
+                            bookAuthorString = "Unknown";
+                        } else {
 
-                        int countAuthor = bookAuthor.length();
-                        for (int e = 0; e < countAuthor; e++) {
-                            String author = bookAuthor.getString(e);
-                            if (bookAuthorString.isEmpty()) {
-                                bookAuthorString = author;
-                            } else if (e == countAuthor - 1) {
-                                bookAuthorString = bookAuthorString + " and " + author;
-                            } else {
-                                bookAuthorString = bookAuthorString + ", " + author;
+                            int countAuthor = bookAuthor.length();
+                            for (int e = 0; e < countAuthor; e++) {
+                                String author = bookAuthor.getString(e);
+                                if (bookAuthorString.isEmpty()) {
+                                    bookAuthorString = author;
+                                } else if (e == countAuthor - 1) {
+                                    bookAuthorString = bookAuthorString + " and " + author;
+                                } else {
+                                    bookAuthorString = bookAuthorString + ", " + author;
+                                }
                             }
                         }
+                        //------------------------------------------------------------------------------
+                        // IMAGE LINKS
+                        //------------------------------------------------------------------------------
+                        JSONObject bookImageLinks = null;
+                        try {
+                            bookImageLinks = bookVolumeInfo.getJSONObject("imageLinks");
+                        } catch (JSONException ignored) {
+                        }
+                        // Convert the image link to a string
+                        String bookSmallThumbnail = "";
+                        if (bookImageLinks == null) {
+                            bookSmallThumbnail = "null";
+                        } else {
+                            bookSmallThumbnail = bookImageLinks.getString("smallThumbnail");
+                        }
+                        // Create a Book object
+
+                        Book mBook = new Book(bookTitle, bookAuthorString, bookSmallThumbnail);
+                        // Add it to the array
+                        parsedResults.add(i, mBook);
                     }
-                    //------------------------------------------------------------------------------
-                    // IMAGE LINKS
-                    //------------------------------------------------------------------------------
-                    JSONObject bookImageLinks = null;
-                    try {
-                        bookImageLinks = bookVolumeInfo.getJSONObject("imageLinks");
-                    } catch (JSONException ignored) {
-                    }
-                    // Convert the image link to a string
-                    String bookSmallThumbnail = "";
-                    if ( bookImageLinks == null){
-                        bookSmallThumbnail = "null";
-                    }else{
-                        bookSmallThumbnail  = bookImageLinks.getString("smallThumbnail");
-                    }
-                    // Create a Book object
-                    Book mBook = new Book(bookTitle, bookAuthorString, bookSmallThumbnail);
-                    // Add it to the array
-                    parsedResults.add(i, mBook);
+                    // Return the results
+                    return parsedResults;
+                } else {
+                    return null;
                 }
-                // Return the results
-                return parsedResults;
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -126,6 +125,11 @@ class FetchTask extends AsyncTask<String, Void, ArrayList<Book>> {
     @Override
     protected void onPostExecute(ArrayList<Book> parsedResults) {
         delegate.processFinish(parsedResults);
+    }
+
+    // Interface to delegate the onPostExecute actions
+    public interface AsyncResponse {
+        void processFinish(ArrayList<Book> output);
     }
 }
 

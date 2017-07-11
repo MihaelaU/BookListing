@@ -26,13 +26,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-
 public class BookListFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static ArrayList<Book> mValues;
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private static ArrayList<Book> mValues;
     private BookListAdapter mAdapter = new BookListAdapter(mValues, getContext());
     private RecyclerView recyclerView;
 
@@ -48,7 +47,6 @@ public class BookListFragment extends Fragment {
 
         }
     }
-
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -114,9 +112,10 @@ public class BookListFragment extends Fragment {
                     mAdapter = new BookListAdapter(mValues, getContext());
 
                     recyclerView.setAdapter(mAdapter);
-
+                    recyclerView.setVisibility(View.VISIBLE);
                     if (mValues == null) {
                         emptyResults.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
 
                     } else {
                         emptyResults.setVisibility(View.GONE);
@@ -127,6 +126,7 @@ public class BookListFragment extends Fragment {
             fetch.execute();
         } else {
             emptyResults.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.GONE);
             noConnection.setVisibility(View.VISIBLE);
         }
     }
@@ -151,25 +151,6 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-
-    /**
-     * results Spinner Listener*/
-    private class ResultsSpinnerListener implements AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            String selected = parent.getItemAtPosition(pos).toString();
-            int Results = Integer.parseInt(selected);
-            final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
-            String searchCriteria = searchField.getText().toString();
-            if (!searchCriteria.isEmpty()) {
-                getBooks(searchCriteria, Results);
-            }
-        }
-
-        public void onNothingSelected(AdapterView parent) {
-
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -189,6 +170,25 @@ public class BookListFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
 
+    }
+
+    /**
+     * results Spinner Listener
+     */
+    private class ResultsSpinnerListener implements AdapterView.OnItemSelectedListener {
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+            String selected = parent.getItemAtPosition(pos).toString();
+            int Results = Integer.parseInt(selected);
+            final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
+            String searchCriteria = searchField.getText().toString();
+            if (!searchCriteria.isEmpty()) {
+                getBooks(searchCriteria, Results);
+            }
+        }
+
+        public void onNothingSelected(AdapterView parent) {
+
+        }
     }
 }
 
