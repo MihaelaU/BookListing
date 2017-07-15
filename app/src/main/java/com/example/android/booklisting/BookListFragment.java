@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -27,13 +26,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 
+
 public class BookListFragment extends Fragment {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private static ArrayList<Book> mValues;
-    private BookListAdapter mAdapter = new BookListAdapter(mValues, getContext());
+    public BookListAdapter mAdapter = new BookListAdapter(mValues, getContext());
     private RecyclerView recyclerView;
 
     // Constructor
@@ -64,7 +64,7 @@ public class BookListFragment extends Fragment {
                 searchField.setCursorVisible(true);
             }
         });
-                searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        searchField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
@@ -91,7 +91,7 @@ public class BookListFragment extends Fragment {
      * getBooks is calling the FetchTask method to query the Google Books API
      *
      * @param searchCriteria the search text entered into the SearchField EditText
-     * @param Results     the number of results to be returned from the API selected
+     * @param Results        the number of results to be returned from the API selected
      *                       in the MaxResults Spinner
      */
     private void getBooks(String searchCriteria, int Results) {
@@ -112,12 +112,9 @@ public class BookListFragment extends Fragment {
                 public void processFinish(ArrayList<Book> output) {
                     mValues = output;
                     mAdapter = new BookListAdapter(mValues, getContext());
-
                     recyclerView.setAdapter(mAdapter);
-
                     if (mValues == null) {
                         emptyResults.setVisibility(View.VISIBLE);
-
                     } else {
                         emptyResults.setVisibility(View.GONE);
 
@@ -135,6 +132,7 @@ public class BookListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booklist_list, container, false);
+        super.onCreate(savedInstanceState);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -151,25 +149,6 @@ public class BookListFragment extends Fragment {
         return view;
     }
 
-
-    /**
-     * results Spinner Listener*/
-    private class ResultsSpinnerListener implements AdapterView.OnItemSelectedListener {
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-            String selected = parent.getItemAtPosition(pos).toString();
-            int Results = Integer.parseInt(selected);
-            final EditText searchField = (EditText) getActivity().findViewById(R.id.search_field);
-            String searchCriteria = searchField.getText().toString();
-            if (!searchCriteria.isEmpty()) {
-                getBooks(searchCriteria, Results);
-            }
-        }
-
-        public void onNothingSelected(AdapterView parent) {
-
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -181,6 +160,7 @@ public class BookListFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -188,7 +168,6 @@ public class BookListFragment extends Fragment {
     }
 
     public interface OnListFragmentInteractionListener {
-
     }
-}
 
+}
